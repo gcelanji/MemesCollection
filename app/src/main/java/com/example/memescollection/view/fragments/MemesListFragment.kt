@@ -1,10 +1,13 @@
 package com.example.memescollection.view.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,7 @@ private const val TAG = "MemesListFragment"
 class MemesListFragment : Fragment() {
 
     private lateinit var binding: MemeItemsListLayoutBinding
+    private lateinit var progressBar : ProgressBar
     private val viewModel: MemesViewModel by lazy {
         ViewModelProvider(this)[MemesViewModel::class.java]
     }
@@ -50,15 +54,20 @@ class MemesListFragment : Fragment() {
                 is UIState.ResponseMemesList -> {
                     Log.d(TAG, "initObservables: $response")
                     // bind data to the view
-                    updateUI(responseData = response.data.data.memes)
+                    // Just to show the Progress Bar :P
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        updateUI(responseData = response.data.data.memes)
+                    }, 3000)
+
                 }
                 is UIState.Error -> {
                     // show error message
-                    Log.d(TAG, "initObservables: $response")
+                    Log.d(TAG, "initObservables: ${response.errorMessage}")
                 }
                 is UIState.Loading -> {
                     // show a progress bar
-                    Log.d(TAG, "initObservables: $response")
+                    binding.progressbar.visibility = View.VISIBLE
+                    Log.d(TAG, "initObservables: ${response.isLoading}")
                 }
             }
 
@@ -69,6 +78,7 @@ class MemesListFragment : Fragment() {
         adapter = MemesAdapter(data = responseData)
         binding.rvMemesList.layoutManager = LinearLayoutManager(context)
         binding.rvMemesList.adapter = adapter
+        binding.progressbar.visibility = View.INVISIBLE
     }
 
 }

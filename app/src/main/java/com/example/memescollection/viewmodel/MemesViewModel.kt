@@ -21,10 +21,6 @@ class MemesViewModel @Inject constructor(
     private val _memes = MutableLiveData<UIState>()
     val memes: LiveData<UIState> get() = _memes
 
-//    init {
-//        getMemesList()
-//    }
-
     fun getMemesList() {
         viewModelScope.launch(ioDispatcher) {
             repository.getMemes().collect {
