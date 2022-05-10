@@ -9,5 +9,5 @@ import retrofit2.http.GET
 interface MemesApiService {
 
     @GET(END_POINT)
-    suspend fun getMemes() : Response<MemesResponse>
+    suspend fun getMemes(): Response<MemesResponse>
 }

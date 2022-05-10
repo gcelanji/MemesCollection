@@ -35,6 +35,8 @@ android {
     buildFeatures {
         // Enables Jetpack Compose for this module
         compose true
+        // Enables view binding
+        viewBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'

@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="24dp"
+    app:cardBackgroundColor="@color/dark_grey">
 
-    <ImageView
-        android:id="@+id/iv_meme_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_launcher_foreground" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_meme_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@id/iv_meme_image"
-        app:layout_constraintStart_toStartOf="@id/iv_meme_image"
-        app:layout_constraintTop_toBottomOf="@id/iv_meme_image"
-        tools:text="Title" />
+        <ImageView
+            android:id="@+id/iv_meme_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/tv_meme_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:fontFamily="cursive"
+            app:layout_constraintEnd_toEndOf="@id/iv_meme_image"
+            app:layout_constraintStart_toStartOf="@id/iv_meme_image"
+            app:layout_constraintTop_toBottomOf="@id/iv_meme_image"
+            tools:text="Title"
+            tools:textColor="@color/black" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>

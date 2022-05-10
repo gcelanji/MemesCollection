@@ -1,10 +1,15 @@
 package com.example.memescollection.di
 
 import com.example.memescollection.common.BASE_URL
+import com.example.memescollection.model.Repository
+import com.example.memescollection.model.RepositoryImpl
 import com.example.memescollection.model.remote.MemesApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 @Module
-@InstallIn
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @Provides
@@ -40,5 +45,13 @@ class NetworkModule {
             .build()
             .create(MemesApiService::class.java)
     }
+
+    @Provides
+    fun provideRepository(apiService: MemesApiService): Repository {
+        return RepositoryImpl(apiService = apiService)
+    }
+
+    @Provides
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
 }
