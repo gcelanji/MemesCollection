@@ -13,30 +13,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_meme_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_foreground" />
-
         <TextView
             android:id="@+id/tv_meme_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:fontFamily="cursive"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24sp"
-            android:fontFamily="cursive"
-            app:layout_constraintEnd_toEndOf="@id/iv_meme_image"
-            app:layout_constraintStart_toStartOf="@id/iv_meme_image"
-            app:layout_constraintTop_toBottomOf="@id/iv_meme_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Title"
             tools:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/iv_meme_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:scaleType="center"
+            app:layout_constraintEnd_toEndOf="@id/tv_meme_title"
+            app:layout_constraintStart_toStartOf="@id/tv_meme_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_meme_title"
+            tools:src="@drawable/ic_launcher_foreground" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acb_like"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:text="@string/like"
+            android:background="@color/like_button"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@id/acb_save"
+            app:layout_constraintStart_toStartOf="@id/iv_meme_image"
+            app:layout_constraintTop_toBottomOf="@id/iv_meme_image" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/acb_save"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:text="@string/save"
+            android:background="@color/save_button"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/iv_meme_image"
+            app:layout_constraintStart_toEndOf="@id/acb_like"
+            app:layout_constraintTop_toBottomOf="@id/iv_meme_image" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
