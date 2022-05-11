@@ -95,7 +95,7 @@ class MemesListFragment : Fragment() {
         downloadFile(item.url, item.name)
     }
 
-    private fun downloadFile(URl: String?, imageName : String?) {
+    private fun downloadFile(URl: String?, imageName: String?) {
         val direct = File(
             Environment.getExternalStorageDirectory()
                 .toString()
@@ -114,7 +114,10 @@ class MemesListFragment : Fragment() {
         )
             .setAllowedOverRoaming(false).setTitle("Demo")
             .setDescription("Something useful. No, really.")
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "${imageName}.jpeg")
+        request.setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS,
+            "${imageName}.jpeg"
+        )
         mgr.enqueue(request)
 
         snackbar = Snackbar.make(
