@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         title.setContent {
             AppCompatTheme {
                 Surface {
-                    displayTitle()
+                    displayTitle("Memes Collection")
                 }
             }
         }
@@ -42,16 +42,34 @@ class MainActivity : AppCompatActivity() {
         setCurrentFragment(MemesListFragment())
 
         navigationBar.setOnItemSelectedListener {
-            when (it.itemId){
-                R.id.home -> setCurrentFragment(MemesListFragment())
-                R.id.favorites -> setCurrentFragment(FavoriteMemesList())
+            when (it.itemId) {
+                R.id.home -> {
+                    setCurrentFragment(MemesListFragment())
+                    title.setContent {
+                        AppCompatTheme {
+                            Surface {
+                                displayTitle("Memes Collection")
+                            }
+                        }
+                    }
+                }
+                R.id.favorites -> {
+                    setCurrentFragment(FavoriteMemesList())
+                    title.setContent {
+                        AppCompatTheme {
+                            Surface {
+                                displayTitle("Favorites")
+                            }
+                        }
+                    }
+                }
             }
             true
         }
 
     }
 
-    private fun setCurrentFragment(fragment : Fragment){
+    private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_memes, fragment)
             .commit()
@@ -59,12 +77,10 @@ class MainActivity : AppCompatActivity() {
 }
 
 
-
-
 @Composable
-private fun displayTitle() {
+private fun displayTitle(title : String) {
     Text(
-        text = stringResource(R.string.memes_collection),
+        text = title,
         textAlign = TextAlign.Center,
         fontSize = 24.sp,
         fontFamily = FontFamily.Default,

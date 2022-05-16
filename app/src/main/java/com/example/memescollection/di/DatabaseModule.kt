@@ -13,10 +13,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule{
+object DatabaseModule {
     @Singleton
     @Provides
-    fun provideSearchDatabase(@ApplicationContext context : Context) =
+    fun provideSearchDatabase(@ApplicationContext context: Context) =
         Room.databaseBuilder(context, MemeDatabase::class.java, "room_DB")
             .fallbackToDestructiveMigration()
             .build()

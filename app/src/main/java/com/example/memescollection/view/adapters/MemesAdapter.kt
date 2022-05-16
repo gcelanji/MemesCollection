@@ -4,12 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memescollection.R
 import com.example.memescollection.databinding.MemeItemLayoutBinding
 import com.example.memescollection.model.Meme
 import com.squareup.picasso.Picasso
 
 private const val TAG = "MemesAdapter"
+
 class MemesAdapter(
     private val data: List<Meme>,
     private val downloadImage: (Meme) -> Unit,
@@ -29,7 +29,7 @@ class MemesAdapter(
                 downloadImage(dataItem)
             }
 
-            binding.acibLike.setOnClickListener {
+            binding.acbAdd.setOnClickListener {
                 Log.d(TAG, "onBind: Like button clicked")
                 addToFavorites(dataItem)
             }

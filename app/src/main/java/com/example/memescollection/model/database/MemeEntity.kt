@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "memes")
 class MemeEntity(
     @PrimaryKey
-    val url : String,
+    val url: String,
     @ColumnInfo(name = "name")
-    val name : String,
+    val name: String,
 )

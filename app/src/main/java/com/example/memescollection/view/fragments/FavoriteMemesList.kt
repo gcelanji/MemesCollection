@@ -1,12 +1,15 @@
 package com.example.memescollection.view.fragments
 
 import android.R
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -55,18 +58,24 @@ class FavoriteMemesList : Fragment() {
     private fun initObservables() {
         viewModel.getFavoriteMemesList()
         viewModel.favoriteMemes.observe(viewLifecycleOwner){
-            updateUI(it)
+            Handler(Looper.getMainLooper()).postDelayed({
+                // Delay three seconds just to view the progress bar :P
+                updateUI(it)
+            }, 3000)
+
             Log.d(TAG, "initObservables: ${it[0].name}")
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateUI(list: List<MemeEntity>) {
         list.let { listMemeEntity ->
             listMemeEntity.map {
                 Meme(it.name, it.url)
             }.let {
-                Log.d(TAG, "updateUI: ${it.toString()}")
+                Log.d(TAG, "updateUI: $it")
                 updateAdapter(it)
+                adapter.notifyDataSetChanged()
             }
         }
 
@@ -76,7 +85,7 @@ class FavoriteMemesList : Fragment() {
         adapter = FavoritesMemesAdapter(
             data = data,
             downloadImage = { download(it) },
-            removeFromFavorites = { addToFavorites(it) })
+            deleteFromFavorites = { deleteFromFavorites(it) })
 
         binding.rvMemesList.layoutManager = LinearLayoutManager(context)
         binding.rvMemesList.adapter = adapter
@@ -123,7 +132,13 @@ class FavoriteMemesList : Fragment() {
         snackbar.show()
     }
 
-    private fun addToFavorites(item: Meme) {
-        viewModel.addToFavorites(item)
+    private fun deleteFromFavorites(item: Meme) {
+        viewModel.deleteFromFavorites(item)
+        viewModel.getFavoriteMemesList()
+        snackbar = Snackbar.make(
+            requireActivity().findViewById(R.id.content),
+            "Deleting...", Snackbar.LENGTH_LONG
+        )
+        snackbar.show()
     }
 }

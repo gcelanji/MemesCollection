@@ -136,13 +136,9 @@ class MemesListFragment : Fragment() {
         viewModel.addToFavorites(item)
         snackbar = Snackbar.make(
             requireActivity().findViewById(R.id.content),
-            "Added to Favorites", Snackbar.LENGTH_LONG
+            "Added to Favorites", Snackbar.LENGTH_SHORT
         )
         snackbar.show()
-
-    }
-
-    private fun showSnackbar(text: String) {
 
     }
 

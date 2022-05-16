@@ -24,7 +24,7 @@ class MemesViewModel @Inject constructor(
     val memes: LiveData<UIState> get() = _memes
 
     private val _favoriteMemes = MutableLiveData<List<MemeEntity>>()
-    val favoriteMemes : LiveData<List<MemeEntity>> get() = _favoriteMemes
+    val favoriteMemes: LiveData<List<MemeEntity>> get() = _favoriteMemes
 
     fun getMemesList() {
         viewModelScope.launch(ioDispatcher) {
@@ -35,17 +35,23 @@ class MemesViewModel @Inject constructor(
 
     }
 
-    fun getFavoriteMemesList(){
+    fun getFavoriteMemesList() {
         viewModelScope.launch(ioDispatcher) {
             _favoriteMemes.postValue(repository.getMemesFromDB())
         }
     }
 
-    fun addToFavorites(meme: Meme){
+    fun addToFavorites(meme: Meme) {
         viewModelScope.launch(ioDispatcher) {
             repository.updateMemeToDB(meme)
         }
 
+    }
+
+    fun deleteFromFavorites(meme: Meme) {
+        viewModelScope.launch(ioDispatcher) {
+            repository.deleteMemeFromDB(meme)
+        }
     }
 
 }

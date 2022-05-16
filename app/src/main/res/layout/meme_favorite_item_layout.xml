@@ -39,17 +39,17 @@
             tools:src="@drawable/ic_launcher_foreground" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/acib_unlike"
-            android:text="@string/remove_from_favorites"
-            android:textColor="@color/white"
-            android:fontFamily="casual"
-            android:textSize="16sp"
-            android:textAllCaps="false"
+            android:id="@+id/acb_remove"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
             android:background="@color/dark_grey"
+            android:fontFamily="casual"
+            android:text="@string/remove_from_favorites"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/iv_meme_image"
             app:layout_constraintTop_toBottomOf="@id/iv_meme_image" />
 
@@ -61,7 +61,7 @@
             android:layout_marginTop="8dp"
             android:background="@color/dark_grey"
             android:src="@drawable/download"
-            app:layout_constraintStart_toEndOf="@+id/acib_unlike"
+            app:layout_constraintStart_toEndOf="@+id/acb_remove"
             app:layout_constraintTop_toBottomOf="@+id/iv_meme_image" />
 
 

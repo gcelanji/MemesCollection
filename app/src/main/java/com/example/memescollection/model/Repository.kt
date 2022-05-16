@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.flow
 interface Repository {
     fun getMemes(): Flow<UIState>
     suspend fun updateMemeToDB(meme: Meme)
-    suspend fun getMemesFromDB() : List<MemeEntity>
+    suspend fun deleteMemeFromDB(meme: Meme)
+    suspend fun getMemesFromDB(): List<MemeEntity>
 }
 
-class RepositoryImpl(private val apiService: MemesApiService, private val memeDAO: MemeDAO) : Repository {
+class RepositoryImpl(private val apiService: MemesApiService, private val memeDAO: MemeDAO) :
+    Repository {
 
     override fun getMemes(): Flow<UIState> {
         return flow {
@@ -28,14 +30,22 @@ class RepositoryImpl(private val apiService: MemesApiService, private val memeDA
         }
     }
 
-    override suspend fun updateMemeToDB(meme : Meme){
+    override suspend fun updateMemeToDB(meme: Meme) {
         memeDAO.updateMemeToDatabase(MemeEntity(meme.url, meme.name))
     }
 
-    override suspend fun getMemesFromDB() : List<MemeEntity>{
-        return memeDAO.getMemesFromDatabase()
+    override suspend fun deleteMemeFromDB(meme: Meme) {
+        memeDAO.deleteMemeFromDatabase(MemeEntity(meme.url, meme.name))
     }
 
+    override suspend fun getMemesFromDB(): List<MemeEntity> {
+        val list = memeDAO.getMemesFromDatabase()
+        val emptyList = listOf(MemeEntity("-","No Favorites Found"))
+        return list.ifEmpty {
+            emptyList
+        }
+
+    }
 
 
 }
