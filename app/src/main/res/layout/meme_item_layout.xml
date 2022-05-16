@@ -30,38 +30,34 @@
         <ImageView
             android:id="@+id/iv_meme_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:scaleType="center"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="@id/tv_meme_title"
             app:layout_constraintStart_toStartOf="@id/tv_meme_title"
             app:layout_constraintTop_toBottomOf="@id/tv_meme_title"
             tools:src="@drawable/ic_launcher_foreground" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/acb_like"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/acib_like"
             android:layout_width="64dp"
             android:layout_height="32dp"
-            android:text="@string/like"
-            android:fontFamily="cursive"
-            android:background="@color/like_button"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@id/acb_save"
+            android:background="@color/dark_grey"
+            android:src="@drawable/like"
             app:layout_constraintStart_toStartOf="@id/iv_meme_image"
             app:layout_constraintTop_toBottomOf="@id/iv_meme_image" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/acb_save"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/acib_save"
             android:layout_width="64dp"
             android:layout_height="32dp"
-            android:text="@string/save"
-            android:fontFamily="cursive"
-            android:background="@color/save_button"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@id/iv_meme_image"
-            app:layout_constraintStart_toEndOf="@id/acb_like"
-            app:layout_constraintTop_toBottomOf="@id/iv_meme_image" />
+            android:background="@color/dark_grey"
+            android:src="@drawable/download"
+            app:layout_constraintStart_toEndOf="@+id/acib_like"
+            app:layout_constraintTop_toBottomOf="@+id/iv_meme_image" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

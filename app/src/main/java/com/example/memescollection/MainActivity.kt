@@ -16,8 +16,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.Fragment
+import com.example.memescollection.view.fragments.FavoriteMemesList
 import com.example.memescollection.view.fragments.MemesListFragment
 import com.google.accompanist.appcompattheme.AppCompatTheme
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,12 +38,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val navigationBar = findViewById<BottomNavigationView>(R.id.btv_bottom_navigation)
+        setCurrentFragment(MemesListFragment())
 
+        navigationBar.setOnItemSelectedListener {
+            when (it.itemId){
+                R.id.home -> setCurrentFragment(MemesListFragment())
+                R.id.favorites -> setCurrentFragment(FavoriteMemesList())
+            }
+            true
+        }
+
+    }
+
+    private fun setCurrentFragment(fragment : Fragment){
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fcv_memes, MemesListFragment())
+            .replace(R.id.fcv_memes, fragment)
             .commit()
     }
 }
+
+
 
 
 @Composable

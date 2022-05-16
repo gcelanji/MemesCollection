@@ -7,8 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,18 +16,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.memescollection.databinding.MemeItemsListLayoutBinding
 import com.example.memescollection.model.Meme
-import com.example.memescollection.model.UIState
+import com.example.memescollection.model.database.MemeEntity
 import com.example.memescollection.view.adapters.MemesAdapter
 import com.example.memescollection.viewmodel.MemesViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
-
-private const val TAG = "MemesListFragment"
+private const val TAG = "FavoriteMemesList"
 
 @AndroidEntryPoint
-class MemesListFragment : Fragment() {
+class FavoriteMemesList : Fragment() {
 
     private lateinit var binding: MemeItemsListLayoutBinding
     private lateinit var snackbar: Snackbar
@@ -54,39 +51,32 @@ class MemesListFragment : Fragment() {
         return binding.root
     }
 
-
     private fun initObservables() {
-        viewModel.getMemesList()
-        viewModel.memes.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is UIState.ResponseMemesList -> {
-                    Log.d(TAG, "initObservables: $response")
-                    // bind data to the view
-                    // Delay 3 seconds just to show the Progress Bar :P
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        updateUI(responseData = response.data.data.memes)
-                    }, 3000)
-
-                }
-                is UIState.Error -> {
-                    // show error message
-                    Log.d(TAG, "initObservables: ${response.errorMessage}")
-                }
-                is UIState.Loading -> {
-                    // show a progress bar
-                    binding.progressbar.visibility = View.VISIBLE
-                    Log.d(TAG, "initObservables: ${response.isLoading}")
-                }
-            }
-
+        viewModel.getFavoriteMemesList()
+        viewModel.favoriteMemes.observe(viewLifecycleOwner){
+            updateUI(it)
+            Log.d(TAG, "initObservables: ${it[0].name}")
         }
     }
 
-    private fun updateUI(responseData: List<Meme>) {
+    private fun updateUI(list: List<MemeEntity>) {
+        list.let { listMemeEntity ->
+            listMemeEntity.map {
+                Meme(it.name, it.url)
+            }.let {
+                Log.d(TAG, "updateUI: ${it.toString()}")
+                updateAdapter(it)
+            }
+        }
+
+    }
+
+    private fun updateAdapter(data: List<Meme>){
         adapter = MemesAdapter(
-            data = responseData,
+            data = data,
             downloadImage = { download(it) },
             addToFavorites = { addToFavorites(it) })
+
         binding.rvMemesList.layoutManager = LinearLayoutManager(context)
         binding.rvMemesList.adapter = adapter
         binding.progressbar.visibility = View.INVISIBLE
@@ -135,6 +125,4 @@ class MemesListFragment : Fragment() {
     private fun addToFavorites(item: Meme) {
         viewModel.addToFavorites(item)
     }
-
-
 }

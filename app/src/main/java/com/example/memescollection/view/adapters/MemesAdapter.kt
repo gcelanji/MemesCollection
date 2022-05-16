@@ -1,7 +1,6 @@
 package com.example.memescollection.view.adapters
 
-import android.icu.number.NumberFormatter.with
-import android.icu.number.NumberRangeFormatter.with
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,18 +8,28 @@ import com.example.memescollection.databinding.MemeItemLayoutBinding
 import com.example.memescollection.model.Meme
 import com.squareup.picasso.Picasso
 
-class MemesAdapter(private val data: List<Meme>, private val downloadImage: (Meme) -> Unit) :
+private const val TAG = "MemesAdapter"
+class MemesAdapter(
+    private val data: List<Meme>,
+    private val downloadImage: (Meme) -> Unit,
+    private val addToFavorites: (Meme) -> Unit
+) :
     RecyclerView.Adapter<MemesAdapter.MemesViewHolder>() {
 
     class MemesViewHolder(private val binding: MemeItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(dataItem: Meme, downloadImage: (Meme) -> Unit) {
+        fun onBind(dataItem: Meme, downloadImage: (Meme) -> Unit, addToFavorites: (Meme) -> Unit) {
             Picasso.get().load(dataItem.url).into(binding.ivMemeImage)
             binding.tvMemeTitle.text = dataItem.name
 
-            binding.acbSave.setOnClickListener{
+            binding.acibSave.setOnClickListener {
                 downloadImage(dataItem)
+            }
+
+            binding.acibLike.setOnClickListener {
+                Log.d(TAG, "onBind: Like button clicked")
+                addToFavorites(dataItem)
             }
 
         }
@@ -40,7 +49,7 @@ class MemesAdapter(private val data: List<Meme>, private val downloadImage: (Mem
     }
 
     override fun onBindViewHolder(holder: MemesAdapter.MemesViewHolder, position: Int) {
-        return holder.onBind(data[position], downloadImage)
+        return holder.onBind(data[position], downloadImage, addToFavorites)
     }
 
     override fun getItemCount(): Int {

@@ -3,6 +3,7 @@ package com.example.memescollection.di
 import com.example.memescollection.common.BASE_URL
 import com.example.memescollection.model.Repository
 import com.example.memescollection.model.RepositoryImpl
+import com.example.memescollection.model.database.MemeDAO
 import com.example.memescollection.model.remote.MemesApiService
 import dagger.Module
 import dagger.Provides
@@ -47,8 +48,8 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideRepository(apiService: MemesApiService): Repository {
-        return RepositoryImpl(apiService = apiService)
+    fun provideRepository(apiService: MemesApiService, memeDAO: MemeDAO): Repository {
+        return RepositoryImpl(apiService = apiService, memeDAO = memeDAO)
     }
 
     @Provides
