@@ -4,33 +4,32 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memescollection.R
+import com.example.memescollection.databinding.MemeFavoriteItemLayoutBinding
 import com.example.memescollection.databinding.MemeItemLayoutBinding
 import com.example.memescollection.model.Meme
 import com.squareup.picasso.Picasso
 
 private const val TAG = "MemesAdapter"
-class MemesAdapter(
+class FavoritesMemesAdapter(
     private val data: List<Meme>,
     private val downloadImage: (Meme) -> Unit,
-    private val addToFavorites: (Meme) -> Unit
+    private val removeFromFavorites: (Meme) -> Unit
 ) :
-    RecyclerView.Adapter<MemesAdapter.MemesViewHolder>() {
+    RecyclerView.Adapter<FavoritesMemesAdapter.FavoritesMemesViewHolder>() {
 
-    class MemesViewHolder(private val binding: MemeItemLayoutBinding) :
+    class FavoritesMemesViewHolder(private val binding: MemeFavoriteItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(dataItem: Meme, downloadImage: (Meme) -> Unit, addToFavorites: (Meme) -> Unit) {
             Picasso.get().load(dataItem.url).into(binding.ivMemeImage)
             binding.tvMemeTitle.text = dataItem.name
 
-
             binding.acibSave.setOnClickListener {
                 downloadImage(dataItem)
             }
 
-            binding.acibLike.setOnClickListener {
-                Log.d(TAG, "onBind: Like button clicked")
+            binding.acibUnlike.setOnClickListener {
+                Log.d(TAG, "onBind: UnLike button clicked")
                 addToFavorites(dataItem)
             }
 
@@ -40,9 +39,9 @@ class MemesAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MemesAdapter.MemesViewHolder {
-        return MemesViewHolder(
-            MemeItemLayoutBinding.inflate(
+    ): FavoritesMemesAdapter.FavoritesMemesViewHolder {
+        return FavoritesMemesViewHolder(
+            MemeFavoriteItemLayoutBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -50,8 +49,8 @@ class MemesAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: MemesAdapter.MemesViewHolder, position: Int) {
-        return holder.onBind(data[position], downloadImage, addToFavorites)
+    override fun onBindViewHolder(holder: FavoritesMemesAdapter.FavoritesMemesViewHolder, position: Int) {
+        return holder.onBind(data[position], downloadImage, removeFromFavorites)
     }
 
     override fun getItemCount(): Int {

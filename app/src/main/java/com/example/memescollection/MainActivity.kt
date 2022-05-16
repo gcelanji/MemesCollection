@@ -66,8 +66,8 @@ private fun displayTitle() {
     Text(
         text = stringResource(R.string.memes_collection),
         textAlign = TextAlign.Center,
-        fontSize = 32.sp,
-        fontFamily = FontFamily.Cursive,
+        fontSize = 24.sp,
+        fontFamily = FontFamily.Default,
         color = Color.White,
         modifier = Modifier
             .fillMaxWidth()

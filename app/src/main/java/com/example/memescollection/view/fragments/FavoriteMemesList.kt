@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.memescollection.databinding.MemeItemsListLayoutBinding
 import com.example.memescollection.model.Meme
 import com.example.memescollection.model.database.MemeEntity
+import com.example.memescollection.view.adapters.FavoritesMemesAdapter
 import com.example.memescollection.view.adapters.MemesAdapter
 import com.example.memescollection.viewmodel.MemesViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -33,7 +34,7 @@ class FavoriteMemesList : Fragment() {
     private val viewModel: MemesViewModel by lazy {
         ViewModelProvider(this)[MemesViewModel::class.java]
     }
-    private lateinit var adapter: MemesAdapter
+    private lateinit var adapter: FavoritesMemesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,10 +73,10 @@ class FavoriteMemesList : Fragment() {
     }
 
     private fun updateAdapter(data: List<Meme>){
-        adapter = MemesAdapter(
+        adapter = FavoritesMemesAdapter(
             data = data,
             downloadImage = { download(it) },
-            addToFavorites = { addToFavorites(it) })
+            removeFromFavorites = { addToFavorites(it) })
 
         binding.rvMemesList.layoutManager = LinearLayoutManager(context)
         binding.rvMemesList.adapter = adapter

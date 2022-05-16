@@ -5,4 +5,6 @@
     <string name="save">SAVE</string>
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
+    <string name="save_to_favorites">Save to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
 </resources>
