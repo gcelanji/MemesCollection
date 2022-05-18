@@ -5,17 +5,16 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.memescollection.common.ImageDownloader
 import com.example.memescollection.databinding.MemeItemsListLayoutBinding
 import com.example.memescollection.model.Meme
 import com.example.memescollection.model.UIState
@@ -54,6 +53,14 @@ class MemesListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false)
+        }
+        ft.detach(this).attach(this).commit()
+    }
 
     private fun initObservables() {
         viewModel.getMemesList()
@@ -85,50 +92,22 @@ class MemesListFragment : Fragment() {
     private fun updateUI(responseData: List<Meme>) {
         adapter = MemesAdapter(
             data = responseData,
-            downloadImage = { download(it) },
+            downloadImage = { downloadMeme(it) },
             addToFavorites = { addToFavorites(it) })
         binding.rvMemesList.layoutManager = LinearLayoutManager(context)
         binding.rvMemesList.adapter = adapter
         binding.progressbar.visibility = View.INVISIBLE
     }
 
-    private fun download(item: Meme) {
-        downloadFile(item.url, item.name)
-    }
-
-    private fun downloadFile(URl: String?, imageName: String?) {
-        val direct = File(
-            Environment.getExternalStorageDirectory()
-                .toString()
-        )
-        if (!direct.exists()) {
-            direct.mkdirs()
-        }
+    private fun downloadMeme(meme: Meme) {
         val mgr = requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val downloadUri = Uri.parse(URl)
-        val request = DownloadManager.Request(
-            downloadUri
-        )
-        request.setAllowedNetworkTypes(
-            DownloadManager.Request.NETWORK_WIFI
-                    or DownloadManager.Request.NETWORK_MOBILE
-        )
-            .setAllowedOverRoaming(false).setTitle("$imageName")
-            .setDescription("Something useful. No, really.")
-        request.setDestinationInExternalPublicDir(
-            Environment.DIRECTORY_DOWNLOADS,
-            "${imageName}.jpeg"
-        )
-        mgr.enqueue(request)
-
+        ImageDownloader.download(meme, mgr)
         snackbar = Snackbar.make(
             requireActivity().findViewById(R.id.content),
-            "Download Completed", Snackbar.LENGTH_LONG
-        ).setAction("Downloads", View.OnClickListener {
+            "Download Completed", Snackbar.LENGTH_SHORT
+        ).setAction("DOWNLOADS") {
             startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
         }
-
-        )
         snackbar.show()
     }
 
@@ -139,8 +118,6 @@ class MemesListFragment : Fragment() {
             "Added to Favorites", Snackbar.LENGTH_SHORT
         )
         snackbar.show()
-
     }
-
 
 }

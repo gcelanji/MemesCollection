@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso
 private const val TAG = "MemesAdapter"
 
 class FavoritesMemesAdapter(
-    private val data: List<Meme>,
+    private val data: MutableList<Meme>,
     private val downloadImage: (Meme) -> Unit,
     private val deleteFromFavorites: (Meme) -> Unit
 ) :
@@ -37,9 +37,12 @@ class FavoritesMemesAdapter(
             binding.acbRemove.setOnClickListener {
                 Log.d(TAG, "onBind: UnLike button clicked")
                 deleteFromFavorites(dataItem)
+
             }
 
+
         }
+
     }
 
     override fun onCreateViewHolder(
@@ -62,4 +65,7 @@ class FavoritesMemesAdapter(
     override fun getItemCount(): Int {
         return data.size
     }
+
+
+
 }

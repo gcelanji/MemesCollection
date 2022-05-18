@@ -1,5 +1,6 @@
 package com.example.memescollection.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.example.memescollection.model.Meme
 import com.example.memescollection.model.Repository
 import com.example.memescollection.model.UIState
 import com.example.memescollection.model.database.MemeEntity
+import com.example.memescollection.view.adapters.FavoritesMemesAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
@@ -25,6 +27,10 @@ class MemesViewModel @Inject constructor(
 
     private val _favoriteMemes = MutableLiveData<List<MemeEntity>>()
     val favoriteMemes: LiveData<List<MemeEntity>> get() = _favoriteMemes
+
+    init {
+        getFavoriteMemesList()
+    }
 
     fun getMemesList() {
         viewModelScope.launch(ioDispatcher) {
@@ -48,6 +54,7 @@ class MemesViewModel @Inject constructor(
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun deleteFromFavorites(meme: Meme) {
         viewModelScope.launch(ioDispatcher) {
             repository.deleteMemeFromDB(meme)

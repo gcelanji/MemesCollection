@@ -5,11 +5,7 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +13,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.memescollection.common.ImageDownloader
 import com.example.memescollection.databinding.MemeItemsListLayoutBinding
 import com.example.memescollection.model.Meme
 import com.example.memescollection.model.database.MemeEntity
 import com.example.memescollection.view.adapters.FavoritesMemesAdapter
-import com.example.memescollection.view.adapters.MemesAdapter
 import com.example.memescollection.viewmodel.MemesViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 private const val TAG = "FavoriteMemesList"
 
@@ -55,14 +50,11 @@ class FavoriteMemesList : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObservables() {
-        viewModel.getFavoriteMemesList()
-        viewModel.favoriteMemes.observe(viewLifecycleOwner){
-            Handler(Looper.getMainLooper()).postDelayed({
-                // Delay three seconds just to view the progress bar :P
-                updateUI(it)
-            }, 3000)
-
+        viewModel.favoriteMemes.observe(viewLifecycleOwner) {
+            updateUI(it)
+            adapter.notifyDataSetChanged()
             Log.d(TAG, "initObservables: ${it[0].name}")
         }
     }
@@ -81,10 +73,12 @@ class FavoriteMemesList : Fragment() {
 
     }
 
-    private fun updateAdapter(data: List<Meme>){
+    private fun updateAdapter(data: List<Meme>) {
         adapter = FavoritesMemesAdapter(
-            data = data,
-            downloadImage = { download(it) },
+            data = data as MutableList<Meme>,
+            downloadImage = {
+                downloadMeme(it)
+            },
             deleteFromFavorites = { deleteFromFavorites(it) })
 
         binding.rvMemesList.layoutManager = LinearLayoutManager(context)
@@ -92,43 +86,16 @@ class FavoriteMemesList : Fragment() {
         binding.progressbar.visibility = View.INVISIBLE
     }
 
-    private fun download(item: Meme) {
-        downloadFile(item.url, item.name)
-    }
 
-    private fun downloadFile(URl: String?, imageName: String?) {
-        val direct = File(
-            Environment.getExternalStorageDirectory()
-                .toString()
-        )
-        if (!direct.exists()) {
-            direct.mkdirs()
-        }
+    private fun downloadMeme(meme: Meme) {
         val mgr = requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val downloadUri = Uri.parse(URl)
-        val request = DownloadManager.Request(
-            downloadUri
-        )
-        request.setAllowedNetworkTypes(
-            DownloadManager.Request.NETWORK_WIFI
-                    or DownloadManager.Request.NETWORK_MOBILE
-        )
-            .setAllowedOverRoaming(false).setTitle("$imageName")
-            .setDescription("Something useful. No, really.")
-        request.setDestinationInExternalPublicDir(
-            Environment.DIRECTORY_DOWNLOADS,
-            "${imageName}.jpeg"
-        )
-        mgr.enqueue(request)
-
+        ImageDownloader.download(meme, mgr)
         snackbar = Snackbar.make(
             requireActivity().findViewById(R.id.content),
-            "Download Completed", Snackbar.LENGTH_LONG
-        ).setAction("Downloads", View.OnClickListener {
+            "Download Completed", Snackbar.LENGTH_SHORT
+        ).setAction("DOWNLOADS") {
             startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
         }
-
-        )
         snackbar.show()
     }
 
@@ -137,8 +104,9 @@ class FavoriteMemesList : Fragment() {
         viewModel.getFavoriteMemesList()
         snackbar = Snackbar.make(
             requireActivity().findViewById(R.id.content),
-            "Deleting...", Snackbar.LENGTH_LONG
+            "Deleting...", Snackbar.LENGTH_SHORT
         )
         snackbar.show()
     }
+
 }
