@@ -1,6 +1,6 @@
 # MemesCollection
 
-MemesCollection is collection of our favorites memes. It leverages public API which provides new memes almost everyday! You can also save your favorite memes so you can view them anytime and download locally on your device. It was developed for educational purposes.
+MemesCollection is collection of our favorites memes. It leverages public API which provides new memes almost everyday! You can also save your favorite memes so you can view them anytime and download locally on your device.
 
 <img width="259" alt="Screenshot 2022-05-18 at 14 14 32" src="https://user-images.githubusercontent.com/37752740/169047884-1101e0f4-fc72-4443-a98f-a745535730a2.png">
 
