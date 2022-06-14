@@ -8,7 +8,8 @@ Retrofit for the network call,
 Gson converter,
 Dependency Injection using Hilt,
 UIState, Flow, Live Data,
-Jetpack Compose.
+Room Database to save favorites,
+Jetpack Compose for the titles.
 
 <img width="259" alt="Screenshot 2022-05-18 at 14 14 32" src="https://user-images.githubusercontent.com/37752740/169047884-1101e0f4-fc72-4443-a98f-a745535730a2.png">
 
